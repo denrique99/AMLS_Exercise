@@ -6,4 +6,3 @@ best_lr_0.001_optadam.pth
 best_lr_0.001_optsgd.pth
 best_lr_0.0005_optadam.pth
 best_lr_0.0005_optadam.pth
-cnn_model_wo_tune.pth

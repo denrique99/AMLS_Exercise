@@ -38,7 +38,7 @@ train_and_eval(
     weight_decay=weight_decay,
     optimizer_type=optimizer_type,
     epochs=epochs,
-    weights_tensor=weights_tensor,  # <<< hier übergeben
+    weights_tensor=weights_tensor,
     device=device,
     save_path= f"models/pipeline_models/best_lr{lr}_wd{weight_decay}_{optimizer_type}_ep{epochs}_after_meeting.pth"
 )

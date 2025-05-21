@@ -7,10 +7,13 @@ def train_and_eval(
     model, train_loader, val_loader, lr, weight_decay, optimizer_type,
     epochs=10, weights_tensor=None, device=None, save_path=None
 ):
+    # Gewichteter Loss
     if weights_tensor is not None:
-        criterion = nn.CrossEntropyLoss(weight=weights_tensor)
+        criterion = nn.CrossEntropyLoss(weight=weights_tensor.to(device))
     else:
         criterion = nn.CrossEntropyLoss()
+
+    # Optimizer definieren
     if optimizer_type == "adam":
         optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     elif optimizer_type == "sgd":
@@ -48,7 +51,6 @@ def train_and_eval(
         val_acc = val_correct / val_total
         val_loss_final = val_loss / len(val_loader)
 
-        # Modell speichern, wenn beste Val-Accuracy erreicht wurde (pro Epoch)
         if save_path is not None and val_acc > best_acc:
             best_acc = val_acc
             os.makedirs(os.path.dirname(save_path), exist_ok=True)

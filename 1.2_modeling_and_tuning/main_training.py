@@ -3,6 +3,7 @@ from src.dataset import create_spectrogram_dataloaders
 from src.model import ECGCNN
 from src.train import train_and_eval
 from src.validation import run_validation
+import torch
 
 # 1. Daten laden und vorverarbeiten
 X_train_split, X_val_split, y_train_split, y_val_split = load_split_data("data/split_data.pkl")
@@ -20,7 +21,13 @@ model = ECGCNN()
 lr = 0.001
 weight_decay = 0.0001
 optimizer_type = "adam"
-epochs = 10
+epochs = 100
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+class_counts = torch.tensor([3638, 549, 1765, 227], dtype=torch.float)
+class_weights = 1. / class_counts
+weights_tensor = class_weights.to(device)
 
 # 4. Training und Mini-Evaluation
 train_and_eval(
@@ -31,7 +38,9 @@ train_and_eval(
     weight_decay=weight_decay,
     optimizer_type=optimizer_type,
     epochs=epochs,
-    save_path= f"models/pipeline_models/best_lr{lr}_wd{weight_decay}_{optimizer_type}_ep{epochs}.pth"
+    weights_tensor=weights_tensor,  # <<< hier übergeben
+    device=device,
+    save_path= f"models/pipeline_models/best_lr{lr}_wd{weight_decay}_{optimizer_type}_ep{epochs}_after_meeting.pth"
 )
 
 # 4. Validierung

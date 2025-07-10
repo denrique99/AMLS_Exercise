@@ -71,6 +71,14 @@ def main():
         save_path=os.path.join(base_dir, "models/pipeline_models/best_augmented.pth")
     )
 
+    from src.inference import run_inference
+
+    run_inference(
+        model_path="models/pipeline_models/best_augmented.pth",  # use your new model
+        test_zip_path="data/X_test.zip",
+        output_path="data/augment.csv",  # or another output file
+        batch_size=32
+    )
     # Validation
     run_validation(
         model_dir=os.path.join(base_dir, "models/pipeline_models"),

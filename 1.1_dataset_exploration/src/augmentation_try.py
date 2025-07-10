@@ -44,3 +44,12 @@ X_train_stft = apply_stft_numpy(X_train_combined)
 train_loader, val_loader = create_spectrogram_dataloaders(
     X_train_stft, y_train_combined, X_val_stft, y_val_split
 )
+
+from src.inference import run_inference
+
+run_inference(
+    model_path="models/pipeline_models/best_augmented.pth",  # use your new model
+    test_zip_path="data/X_test.zip",
+    output_path="data/augment.csv",  # or another output file
+    batch_size=32
+)

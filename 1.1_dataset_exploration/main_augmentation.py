@@ -49,7 +49,7 @@ def main():
     lr = 0.001
     weight_decay = 0.0001
     optimizer_type = "adam"
-    epochs = 10  # <= 10 epochs as requested
+    epochs = 100  # <= 10 epochs as requested
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -58,6 +58,7 @@ def main():
     weights_tensor = class_weights.to(device)
 
     # Training
+    '''
     train_and_eval(
         model,
         train_loader,
@@ -70,13 +71,14 @@ def main():
         device=device,
         save_path=os.path.join(base_dir, "models/pipeline_models/best_augmented.pth")
     )
+    '''
 
     from src.inference import run_inference
 
     run_inference(
-        model_path="models/pipeline_models/best_augmented.pth",  # use your new model
-        test_zip_path="data/X_test.zip",
-        output_path="data/augment.csv",  # or another output file
+        model_path=base_dir+"/models/pipeline_models/best_lr0.001_wd0.0001_adam_ep100_after_meeting.pth",  # use your new model
+        test_zip_path=data_dir+"/X_test.zip",
+        output_path=data_dir+"/augment.csv",  # or another output file
         batch_size=32
     )
     # Validation

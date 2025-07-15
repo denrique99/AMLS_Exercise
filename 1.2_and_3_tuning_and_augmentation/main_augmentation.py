@@ -81,7 +81,7 @@ def main():
     run_inference(
         model_path=os.path.join(base_dir, "models", "pipeline_models", "best_lr0.001_wd0.0001_adam_ep100.pth"),
         test_zip_path="data/X_test.zip",
-        output_path=os.path.join(data_dir, "augment.csv"), 
+        output_path="augment.csv",
         batch_size=32
     )
 

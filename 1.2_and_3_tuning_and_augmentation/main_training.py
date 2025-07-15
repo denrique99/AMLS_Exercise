@@ -6,12 +6,20 @@ from src.validation import run_validation
 import torch
 from pathlib import Path
 
+THIS_DIR = Path(__file__).resolve().parent
+MODEL_DIR = THIS_DIR / "models" / "pipeline_models"      
+VAL_PATH =  THIS_DIR / "data" / "val_data.pt"
+
 # 1. Daten laden und vorverarbeiten
-X_train_split, X_val_split, y_train_split, y_val_split = load_split_data("data/split_data.pkl")
+X_train_split, X_val_split, y_train_split, y_val_split = load_split_data(THIS_DIR / "data" / "split_data.pkl")
 X_train_split = pad_sequences(X_train_split)
 X_val_split = pad_sequences(X_val_split)
 X_train_stft = apply_stft_numpy(X_train_split)
 X_val_stft = apply_stft_numpy(X_val_split)
+
+# Speichern für spätere Validierung
+torch.save({'X_val_stft': X_val_stft, 'y_val_split': y_val_split}, VAL_PATH)
+print(f"Saved STFT validation data to {VAL_PATH}")
 
 # 2. DataLoader bauen
 train_loader, val_loader = create_spectrogram_dataloaders(X_train_stft, y_train_split, X_val_stft, y_val_split)
@@ -22,7 +30,7 @@ model = ECGCNN()
 lr = 0.001
 weight_decay = 0.0001
 optimizer_type = "adam"
-epochs = 100
+epochs = 1
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -42,17 +50,10 @@ train_and_eval(
     epochs=epochs,
     weights_tensor=weights_tensor,
     device=device,
-    save_path= f"models/pipeline_models/best_lr{lr}_wd{weight_decay}_{optimizer_type}_ep{epochs}.pth"
+    save_path= f"{THIS_DIR}/models/pipeline_models/best_lr{lr}_wd{weight_decay}_{optimizer_type}_ep{epochs}.pth"
 )
 
 # 4. Validierung
-THIS_DIR = Path(__file__).resolve().parent
-
-MODEL_DIR = THIS_DIR / "models" / "pipeline_models"
-
-REPO_ROOT = THIS_DIR.parent              
-VAL_PATH  = REPO_ROOT / "data" / "val_data.pt"
-
 run_validation(
         model_dir=MODEL_DIR,
         val_data_path=VAL_PATH,

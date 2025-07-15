@@ -32,7 +32,7 @@ def analyze_ecg_data(ecg_data: List[List[int]], labels: List[int]) -> pd.DataFra
         "length": lengths,
         "label": labels
     })
-    stats_summary = df_stats.groupby("label")["length"].describe()
+    stats_summary = df_stats.groupby("label")["length"].count().reset_index(name="count")
 
     sampling_rate = 300  # Hz
     start_sample = 3000
@@ -65,8 +65,8 @@ def split_and_save_data(train_data: List[List[int]], labels: List[int], output_p
     with open(output_path, "wb") as f:
         pickle.dump((X_train_split, X_val_split, y_train_split, y_val_split), f)
 
-    print(f"Trainingsdaten: {len(X_train_split)} Zeitreihen")
-    print(f"Validierungsmenge: {len(X_val_split)} Beispiele")
+    print(f"Training-data: {len(X_train_split)} time series")
+    print(f"Validation-data: {len(X_val_split)} time series")
     print("Train-class-distribution:", Counter(y_train_split))
     print("Val-class-distribution:", Counter(y_val_split))
 
@@ -79,21 +79,18 @@ def main():
 
     # Prüfung
     if isinstance(train_data, list) and len(train_data) > 0 and isinstance(train_data[0], list):
-        print(f"Erfolgreich geladen: {len(train_data)} Zeitreihen")
-        print(f"→ Erste Zeitreihe: {len(train_data[0])} Werte, Beispiel: {train_data[0][:10]}")
+        print(f"Successfully loaded: {len(train_data)} time series")
+        print(f"→ First time series: {len(train_data[0])} values, example: {train_data[0][:10]}")
     else:
-        print("Fehler beim Einlesen der Binärdatei.")
+        print("Error loading binary file.")
         return
 
-    # Analyse & Visualisierung
+    # Analysis & Visualization
     summary = analyze_ecg_data(train_data, labels)
-    print("Statistik Zusammenfassung:\n", summary)
+    print("Class-Distribution:\n", summary)
 
     # Split & Save
     split_and_save_data(train_data, labels, "1.2_and_3_tuning_and_augmentation/data/split_data.pkl")
-
-    # Verteilung
-    print("Class distribution (gesamt):", Counter(labels))
 
 if __name__ == "__main__":
     main()

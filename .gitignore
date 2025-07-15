@@ -2,8 +2,6 @@ X_test.zip
 X_train.zip
 y_train.csv
 split_data.pkl
-tuning_approach_1/
-tuning_approach_2/
 1.2_modeling_and_tuning/__pycache__/
 1.2_modeling_and_tuning/src/__pycache__/
 1.2_modeling_and_tuning/ecg_modeling_tuning.ipynb

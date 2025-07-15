@@ -15,9 +15,9 @@ import torch
 def main():
     print('Files in ./data:', os.listdir('./'))
     # 1. Daten laden und vorverarbeiten
-    data_dir = "./AMLS_Exercise/1.2_modeling_and_tuning/data"
-    X_train_split, X_val_split, y_train_split, y_val_split = load_split_data("./AMLS_Exercise/1.2_modeling_and_tuning/data/split_data.pkl")
-    base_dir = "./AMLS_Exercise/1.2_modeling_and_tuning"
+    data_dir = "./AMLS_Exercise/1.2&3_tuning_and_augmentation/data"
+    X_train_split, X_val_split, y_train_split, y_val_split = load_split_data("./AMLS_Exercise/1.2&3_tuning_and_augmentation/data/split_data.pkl")
+    base_dir = "./AMLS_Exercise/1.2&3_tuning_and_augmentation"
     X_train_split = pad_sequences(X_train_split)
     X_val_split = pad_sequences(X_val_split)
 

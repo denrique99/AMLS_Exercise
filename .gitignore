@@ -8,3 +8,4 @@ tuning_approach_2/
 1.2_modeling_and_tuning/src/__pycache__/
 1.2_modeling_and_tuning/ecg_modeling_tuning.ipynb
 data/val_data.pt
+venv/

@@ -55,7 +55,7 @@ def run_inference(
             X_batch = X_batch.to(device)
             lengths = torch.tensor(lengths).to(device)
             X_stft = stft_transform(X_batch, lengths, n_fft=256, hop_length=128)
-            print("X_stft shape:", X_stft.shape)
+            # print("X_stft shape:", X_stft.shape)
             # Padding der letzten Batch auf gleiche Zeitlänge
             if expected_time_dim is None:
                 expected_time_dim = X_stft.shape[-1]

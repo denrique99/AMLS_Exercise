@@ -90,7 +90,7 @@ def main():
     print("Statistik Zusammenfassung:\n", summary)
 
     # Split & Save
-    split_and_save_data(train_data, labels, "data/split_data.pkl")
+    split_and_save_data(train_data, labels, "1.2_and_3_tuning_and_augmentation/data/split_data.pkl")
 
     # Verteilung
     print("Class distribution (gesamt):", Counter(labels))
